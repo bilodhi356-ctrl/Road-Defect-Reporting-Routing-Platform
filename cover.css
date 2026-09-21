@@ -1,0 +1,14 @@
+.hero {
+  position: relative;
+  isolation: isolate;
+  background-color: #dce7e0;
+  background-image: linear-gradient(90deg, #f5f5ede6 0%, #f5f5ed99 38%, #f5f5ed33 72%, #f5f5ed12 100%), url("assets/road-cover.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hero > * {
+  position: relative;
+  z-index: 1;
+}

@@ -1,0 +1,1 @@
+const multer=require('multer');const allowed=new Set(['image/jpeg','image/png','image/webp']);const upload=multer({storage:multer.memoryStorage(),limits:{fileSize:5*1024*1024,files:3},fileFilter:(_req,file,cb)=>allowed.has(file.mimetype)?cb(null,true):cb(Object.assign(new Error('Only JPG, PNG and WebP images are allowed.'),{status:400}))});module.exports={upload};
