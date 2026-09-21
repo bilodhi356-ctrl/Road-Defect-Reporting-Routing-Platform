@@ -13,6 +13,7 @@ const reportRoutes = require('./src/routes/reports');
 const staffRoutes = require('./src/routes/staff');
 
 const app = express();
+app.set('trust proxy', 1);
 app.disable('x-powered-by');
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' }, contentSecurityPolicy: { directives: { defaultSrc: ["'self'"], styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://unpkg.com'], scriptSrc: ["'self'", 'https://unpkg.com'], fontSrc: ["'self'", 'https://fonts.gstatic.com'], imgSrc: ["'self'", 'data:', 'https://*.basemaps.cartocdn.com', 'https://res.cloudinary.com'], connectSrc: ["'self'"], objectSrc: ["'none'"], upgradeInsecureRequests: [] } } }));
 app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000', methods: ['GET', 'POST', 'PATCH'], credentials: false }));
