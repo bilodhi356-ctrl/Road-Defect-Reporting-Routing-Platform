@@ -11,7 +11,6 @@ const authRoutes = require('./src/routes/auth');
 const reportRoutes = require('./src/routes/reports');
 const staffRoutes = require('./src/routes/staff');
 
-const express = require('express');
 const app = express();
 app.set('trust proxy', 1);
 const { publicLimiter, authLimiter } = require('./src/middleware/rateLimit');
