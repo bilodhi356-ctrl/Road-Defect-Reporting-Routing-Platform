@@ -25,6 +25,11 @@ app.use('/api/reports', publicLimiter, reportRoutes);
 app.use('/api/staff', staffRoutes);
 // Explicitly serve only browser assets; never expose source files, .env, logs or backups.
 app.get(['/', '/index.html'], (_req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.get(['/track', '/track.html'], (_req, res) => res.sendFile(path.join(__dirname, 'track.html')));
+app.get(['/login', '/login.html'], (_req, res) => res.sendFile(path.join(__dirname, 'login.html')));
+app.get('/report.js', (_req, res) => res.sendFile(path.join(__dirname, 'report.js')));
+app.get('/track.js', (_req, res) => res.sendFile(path.join(__dirname, 'track.js')));
+app.get('/login.js', (_req, res) => res.sendFile(path.join(__dirname, 'login.js')));
 app.get('/app.js', (_req, res) => res.sendFile(path.join(__dirname, 'app.js')));
 app.get('/styles.css', (_req, res) => res.sendFile(path.join(__dirname, 'styles.css')));
 app.get('/cover.css', (_req, res) => res.sendFile(path.join(__dirname, 'cover.css')));
