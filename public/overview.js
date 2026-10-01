@@ -8,11 +8,18 @@ const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, character =>
   "'": '&#39;',
   '"': '&quot;'
 }[character]));
-const formatKenyaTime = value => {
-  const date = value ? new Date(value) : new Date();
-  if (Number.isNaN(date.getTime())) return 'time unavailable';
-  return new Intl.DateTimeFormat('en-KE', { timeZone: 'Africa/Nairobi', dateStyle: 'medium', timeStyle: 'short' }).format(date);
+const getGreeting = () => {
+  const hour = new Date().toLocaleString('en-GB', {
+    timeZone: 'Africa/Nairobi',
+    hour: 'numeric',
+    hour12: false
+  });
+  const h = parseInt(hour, 10);
+  if (h < 12) return 'Good morning';
+  if (h < 17) return 'Good afternoon';
+  return 'Good evening';
 };
+
 
 if (!token) {
   window.location.replace('/login');
@@ -22,7 +29,7 @@ if (!token) {
   $('#staffRole').textContent = user?.role || 'Authenticated staff';
   $('#staffOffice').textContent = user?.office || 'KERRA STAFF PORTAL';
   $('#staffAvatar').textContent = displayName.split(/\s+/).map(part => part[0]).join('').slice(0, 2).toUpperCase();
-  $('#welcomeHeading').textContent = `Good morning, ${displayName.split(/\s+/)[0]}.`;
+  $('#welcomeHeading').textContent = `${getGreeting()}, ${displayName.split(/\s+/)[0]}.`;
   $('#enrollmentLink').hidden = user?.role !== 'admin';
   $('#managementLink').hidden = user?.role !== 'admin';
 
