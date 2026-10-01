@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Road Defect Map - KeRRA</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/map.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/dashboard">
+      <span class="brand-mark">R</span>
+      <span>KeRRA Staff Portal</span>
+    </a>
+    <nav>
+      <a class="nav-link" href="/dashboard">Dashboard</a>
+      <a class="nav-link" href="/">Citizen reporting</a>
+      <button id="signOut" class="staff-link" type="button">Sign out</button>
+    </nav>
+  </header>
+  <main class="map-page">
+    <section class="dash-header">
+      <div>
+        <p class="eyebrow">KERRA STAFF PORTAL</p>
+        <h1>Road defect map</h1>
+        <p>Reported defects and verified county boundaries across Kenya.</p>
+      </div>
+    </section>
+    <section class="panel map-page-panel">
+      <div id="mapStatus" class="map-status" role="status">Loading terrain map and reports…</div>
+      <div id="reportMap" aria-label="Terrain map of road defects across Kenya"></div>
+      <div class="legend">
+        <span><i class="dot red"></i>Critical</span>
+        <span><i class="dot amber-dot"></i>New</span>
+        <span><i class="dot blue-dot"></i>In progress</span>
+      </div>
+    </section>
+  </main>
+  <script src="/map.js"></script>
+</body>
+</html>

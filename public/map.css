@@ -1,0 +1,57 @@
+.map-page {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 38px 5%;
+}
+
+.map-page .dash-header {
+  margin-bottom: 22px;
+}
+
+.map-page .dash-header h1 {
+  font-size: 34px;
+  letter-spacing: -1.5px;
+}
+
+.map-page .dash-header p:last-child {
+  color: var(--muted);
+  margin: 6px 0;
+}
+
+.map-page-panel {
+  min-height: 0;
+}
+
+#reportMap {
+  width: 100%;
+  height: min(72vh, 820px);
+  min-height: 480px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #e7ece8;
+}
+
+.map-status {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0 0 12px;
+}
+
+.map-status:empty {
+  display: none;
+}
+
+.map-page-panel .legend {
+  margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+  .map-page {
+    padding: 28px 16px;
+  }
+
+  #reportMap {
+    height: 68vh;
+    min-height: 380px;
+  }
+}
