@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Road Defect Reporting &amp; Routing Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/cover.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="brand-mark">R</span>
+      <span>Road Defect Reporting &amp; Routing Platform</span>
+    </a>
+    <nav>
+      <a class="nav-link active" href="/">Report a defect</a>
+      <a class="nav-link" href="/track">Track report</a>
+      <a class="staff-link" href="/login">Staff portal →</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">KENYA RURAL ROADS</p>
+        <h1>Safer roads start<br>with <em>your report.</em></h1>
+        <p class="lead">Spotted a pothole, washed-out road, or damaged culvert? Send KeRRA the location and evidence in minutes.</p>
+        <div class="trust">
+          <span>◉ GPS routed</span>
+          <span>◈ Photo evidence</span>
+          <span>✓ Follow-up updates</span>
+        </div>
+      </div>
+      <div class="report-card">
+        <div class="card-heading">
+          <span class="step-badge">01</span>
+          <div>
+            <h2>Report a road defect</h2>
+            <p>Help us direct this to the right team.</p>
+          </div>
+        </div>
+        <form id="reportForm">
+          <div class="two-col">
+            <div class="field">
+              <label for="category">What did you notice?</label>
+              <select id="category" required>
+                <option value="">Select defect type</option>
+                <option>Pothole</option>
+                <option>Erosion / washout</option>
+                <option>Damaged culvert</option>
+                <option>Blocked drainage</option>
+                <option>Damaged bridge</option>
+                <option>Other road hazard</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="severity">Severity</label>
+              <select id="severity" required>
+                <option value="">Select severity</option>
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+                <option>Critical</option>
+              </select>
+            </div>
+          </div>
+          <div class="two-col">
+            <div class="field">
+              <label for="roadName">Road name / number</label>
+              <input id="roadName" maxlength="120" placeholder="e.g. Githioro–Ndaragwa Road">
+            </div>
+            <div class="field">
+              <label for="landmark">Nearest landmark</label>
+              <input id="landmark" maxlength="160" placeholder="e.g. Market junction">
+            </div>
+          </div>
+          <div class="field">
+            <label for="description">Tell us a little more <small>(optional)</small></label>
+            <textarea id="description" rows="3" placeholder="e.g. Large pothole near the market junction"></textarea>
+          </div>
+          <div class="field contact-consent">
+            <label><input id="contactConsent" type="checkbox"> I agree that KeRRA may contact me about this report.</label>
+            <div id="contactFields" class="two-col" hidden>
+              <div>
+                <label for="contactEmail">Email address</label>
+                <input id="contactEmail" type="email" maxlength="254" placeholder="you@example.com">
+              </div>
+              <div>
+                <label for="contactPhone">Phone number</label>
+                <input id="contactPhone" type="tel" maxlength="20" placeholder="+254 7…">
+              </div>
+            </div>
+            <small>Provide at least one contact method. Your details are visible only to authorised staff and are not published.</small>
+          </div>
+          <div class="two-col">
+            <div class="field">
+              <label>Location</label>
+              <button class="location-button" id="locateBtn" type="button"><span>⌖</span><span id="locationLabel">Use my location</span></button>
+            </div>
+            <div class="field">
+              <label for="photo">Photo evidence</label>
+              <label class="photo-button" for="photo">▧ <span id="photoLabel">Add photo</span></label>
+              <input id="photo" type="file" accept="image/*" capture="environment" hidden>
+            </div>
+          </div>
+          <div id="locationNote" class="location-note">Your exact location is only used to route this report.</div>
+          <button class="submit-button" type="submit">Send report <span>→</span></button>
+        </form>
+      </div>
+    </section>
+  </main>
+  <div id="toast" role="status"></div>
+  <script src="/report.js"></script>
+</body>
+</html>

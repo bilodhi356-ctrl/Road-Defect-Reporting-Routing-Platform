@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Dashboard - KeRRA</title>
+  <link rel="stylesheet" href="/styles.css">
+  <style>.modal[hidden]{display:none!important}</style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/dashboard">
+      <span class="brand-mark">R</span>
+      <span>KeRRA Staff Dashboard</span>
+    </a>
+    <nav>
+      <a class="nav-link" href="/">Citizen reporting</a>
+      <button id="signOut" class="staff-link" type="button">Sign out</button>
+    </nav>
+  </header>
+  <main class="dashboard-view active">
+    <div class="dashboard-main">
+      <section class="dash-header">
+        <div>
+          <p class="eyebrow">KERRA STAFF PORTAL</p>
+          <h1 id="welcomeHeading">Report overview</h1>
+          <p>Review and manage citizen road-defect reports assigned to your office.</p>
+        </div>
+      </section>
+      <section class="metrics">
+        <article><span class="metric-icon amber">!</span><div><b id="newCount">0</b><p>New reports</p></div></article>
+        <article><span class="metric-icon blue">◷</span><div><b id="progressCount">0</b><p>In progress</p></div></article>
+        <article><span class="metric-icon green">✓</span><div><b id="resolvedCount">0</b><p>Resolved</p></div></article>
+      </section>
+      <section class="panel full-panel">
+        <div class="panel-heading">
+          <div>
+            <h2>Recent reports</h2>
+            <p>Road defects assigned to your office</p>
+          </div>
+        </div>
+        <p id="dashboardMessage">Loading reports…</p>
+        <div id="reportsList" class="reports-list"></div>
+      </section>
+    </div>
+  </main>
+  <div id="photoModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="photoTitle" style="position:fixed;inset:0;background:rgba(16,35,29,.75);display:grid;place-items:center;padding:24px;z-index:30;">
+    <div class="modal-card" style="position:relative;width:min(620px,100%);background:#fff;border-radius:13px;padding:24px;box-shadow:0 22px 70px rgba(0,0,0,.35);">
+      <button id="closePhoto" type="button" aria-label="Close photo" style="position:absolute;right:16px;top:12px;border:0;background:none;font-size:28px;color:#5e6e67;cursor:pointer;">×</button>
+      <p class="eyebrow">REPORT EVIDENCE</p>
+      <h2 id="photoTitle" style="margin:0 0 12px;font-size:22px;">Citizen photo</h2>
+      <img id="evidenceImage" alt="Citizen photo" style="width:100%;max-height:70vh;object-fit:contain;border-radius:10px;display:block;background:#eef3ef;">
+    </div>
+  </div>
+  <script>
+    const token = localStorage.getItem('staffToken') || sessionStorage.getItem('bw_token');
+    const user = JSON.parse(sessionStorage.getItem('bw_user') || 'null');
+    const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, character => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+    }[character]));
+    if (!token) {
+      window.location.replace('/login');
+    }
+    if (user?.name) document.getElementById('welcomeHeading').textContent = `Good morning, ${user.name}.`;
+    document.getElementById('signOut').onclick = () => {
+      localStorage.removeItem('staffToken');
+      sessionStorage.removeItem('bw_token');
+      sessionStorage.removeItem('bw_user');
+      window.location.replace('/login');
+    };
+
+    const openCitizenPhoto = (url, reference) => {
+      const modal = document.getElementById('photoModal');
+      const title = document.getElementById('photoTitle');
+      const image = document.getElementById('evidenceImage');
+      title.textContent = `Citizen photo · ${reference}`;
+      image.src = url;
+      modal.hidden = false;
+    };
+
+    document.getElementById('closePhoto').onclick = () => {
+      document.getElementById('photoModal').hidden = true;
+      document.getElementById('evidenceImage').src = '';
+    };
+    document.getElementById('photoModal').addEventListener('click', event => {
+      if (event.target === event.currentTarget) document.getElementById('closePhoto').click();
+    });
+
+    document.getElementById('reportsList').addEventListener('click', event => {
+      const button = event.target.closest('button[data-view-photo]');
+      if (!button) return;
+      openCitizenPhoto(button.dataset.photoUrl, button.dataset.reference);
+    });
+
+    (async () => {
+      try {
+        const response = await fetch('/api/reports', { headers: { Authorization: `Bearer ${token}` } });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.message || 'Unable to load reports.');
+        const reports = data.reports || [];
+        document.getElementById('newCount').textContent = reports.filter(report => report.status === 'New').length;
+        document.getElementById('progressCount').textContent = reports.filter(report => report.status === 'In progress').length;
+        document.getElementById('resolvedCount').textContent = reports.filter(report => report.status === 'Resolved').length;
+        document.getElementById('dashboardMessage').textContent = reports.length ? '' : 'No reports are currently assigned to your office.';
+        document.getElementById('reportsList').innerHTML = reports.map(report => `
+          <article class="report-row">
+            <span class="report-icon">◉</span>
+            <div class="report-info">
+              <strong>${escapeHtml(report.category)}</strong>
+              <small>${escapeHtml(report.reference)} · ${escapeHtml(report.roadName || 'Road not specified')}</small>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              ${report.reporterPhotoUrl ? `<button type="button" data-view-photo data-photo-url="${escapeHtml(report.reporterPhotoUrl)}" data-reference="${escapeHtml(report.reference)}" class="text-button" style="color:var(--green);">View citizen photo</button>` : ''}
+              <span class="status ${report.status.replace(/\s+/g, '-')}">${escapeHtml(report.status)}</span>
+            </div>
+          </article>`).join('');
+      } catch (error) {
+        document.getElementById('dashboardMessage').textContent = error.message;
+      }
+    })();
+  </script>
+</body>
+</html>
