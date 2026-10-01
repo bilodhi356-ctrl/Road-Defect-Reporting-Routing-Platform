@@ -8,6 +8,11 @@ const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, character =>
   "'": '&#39;',
   '"': '&quot;'
 }[character]));
+const formatKenyaTime = value => {
+  const date = value ? new Date(value) : new Date();
+  if (Number.isNaN(date.getTime())) return 'time unavailable';
+  return new Intl.DateTimeFormat('en-KE', { timeZone: 'Africa/Nairobi', dateStyle: 'medium', timeStyle: 'short' }).format(date);
+};
 
 if (!token) {
   window.location.replace('/login');
@@ -83,7 +88,7 @@ if (!token) {
           <span class="report-icon">${report.category === 'Pothole' ? '◉' : '△'}</span>
           <div class="report-info">
             <strong>${escapeHtml(report.category)}</strong>
-            <small>${escapeHtml(report.reference)} · ${escapeHtml(report.office)} · ${new Date(report.createdAt).toLocaleString()}</small>
+            <small>${escapeHtml(report.reference)} · ${escapeHtml(report.office)} · ${formatKenyaTime(report.createdAt)}</small>
           </div>
           <span class="status ${escapeHtml(report.status.replace(/\s+/g, '-'))}">${escapeHtml(report.status)}</span>
         </article>`).join('')
