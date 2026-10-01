@@ -19,7 +19,7 @@ document.querySelector('#loginForm').addEventListener('submit', async event => {
 
     sessionStorage.setItem('bw_token', data.token);
     sessionStorage.setItem('bw_user', JSON.stringify(data.user));
-    window.location.assign('/dashboard');
+    window.location.assign('/overview');
   } catch (error) {
     errorMessage.textContent = error.message;
   } finally {

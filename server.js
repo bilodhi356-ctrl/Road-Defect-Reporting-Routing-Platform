@@ -26,6 +26,9 @@ app.use('/api/staff', staffRoutes);
 // Explicitly serve only browser assets; never expose source files, .env, logs or backups.
 app.get(['/', '/index.html'], (_req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 app.get(['/login', '/login.html'], (_req, res) => res.sendFile(path.join(__dirname, 'public', 'login.html')));
+app.get('/overview', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'overview.html')));
+app.get('/overview.js', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'overview.js')));
+app.get('/overview.css', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'overview.css')));
 app.get('/dashboard', (_req, res) => res.sendFile(path.join(__dirname, 'dashboard.html')));
 app.get('/dashboard-entry.js', (_req, res) => res.sendFile(path.join(__dirname, 'dashboard-entry.js')));
 app.get('/map', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'map.html')));

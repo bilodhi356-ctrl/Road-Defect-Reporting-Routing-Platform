@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Overview - KeRRA</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/overview.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+<body>
+  <main class="dashboard-view active overview-page">
+    <aside class="sidebar">
+      <a class="brand" href="/overview"><span class="brand-mark">R</span>Road Defect Reporting &amp; Routing Platform</a>
+      <p class="staff-tag">KERRA STAFF PORTAL</p>
+      <a class="side-nav active" href="/overview">▦ Overview</a>
+      <a class="side-nav" href="/dashboard?tab=reports">◉ All reports <b id="reportCount">0</b></a>
+      <a class="side-nav" href="/map">⌖ Map view</a>
+      <a id="enrollmentLink" class="side-nav" href="/dashboard?tab=enrollment" hidden>＋ Enrol staff</a>
+      <a id="managementLink" class="side-nav" href="/dashboard?tab=management" hidden>☷ Staff management</a>
+      <div class="staff-profile">
+        <div class="avatar" id="staffAvatar">KR</div>
+        <div><strong id="staffName">Staff member</strong><small id="staffRole">Authenticated staff</small></div>
+      </div>
+      <button id="signOut" class="side-nav" type="button">↪ Sign out</button>
+    </aside>
+    <div class="dashboard-main">
+      <div class="dash-header">
+        <div>
+          <p class="eyebrow" id="staffOffice">KERRA STAFF PORTAL</p>
+          <h1 id="welcomeHeading">Good morning.</h1>
+          <p>Here’s what needs attention across your region.</p>
+        </div>
+        <a class="outline-button" href="/">← Citizen view</a>
+      </div>
+      <section class="metrics" aria-label="Report summary">
+        <article><span class="metric-icon amber">!</span><div><b id="newCount">0</b><p>New reports</p></div></article>
+        <article><span class="metric-icon blue">◷</span><div><b id="progressCount">0</b><p>In progress</p></div></article>
+        <article><span class="metric-icon green">✓</span><div><b id="resolvedCount">0</b><p>Resolved this month</p></div></article>
+      </section>
+      <div class="dashboard-grid overview-grid">
+        <section class="panel report-panel">
+          <div class="panel-heading">
+            <div><h2>Needs attention</h2><p>Newest reports waiting for review</p></div>
+            <a class="text-button" href="/dashboard?tab=reports">View all →</a>
+          </div>
+          <div id="attentionList"><p>Loading reports…</p></div>
+        </section>
+        <section class="panel map-panel">
+          <div class="panel-heading">
+            <div><h2>Report map</h2><p>Road defects across Kenya</p></div>
+            <a class="text-button" href="/map">Expand →</a>
+          </div>
+          <a class="overview-map-link" href="/map" aria-label="Open full road-defect terrain map">
+            <div id="overviewMap"></div>
+          </a>
+          <div class="legend">
+            <span><i class="dot red"></i>Critical</span>
+            <span><i class="dot amber-dot"></i>New</span>
+            <span><i class="dot blue-dot"></i>In progress</span>
+          </div>
+          <p id="overviewMessage" class="overview-message" role="status"></p>
+        </section>
+      </div>
+    </div>
+  </main>
+  <script src="/overview.js"></script>
+</body>
+</html>
