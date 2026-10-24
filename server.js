@@ -29,7 +29,7 @@ app.get(['/login', '/login.html'], (_req, res) => res.sendFile(path.join(__dirna
 app.get('/overview', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'overview.html')));
 app.get('/overview.js', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'overview.js')));
 app.get('/overview.css', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'overview.css')));
-app.get('/dashboard', (_req, res) => res.sendFile(path.join(__dirname, 'dashboard.html')));
+app.get(['/dashboard', '/reports', '/enrol-staff', '/staff-management'], (_req, res) => res.sendFile(path.join(__dirname, 'dashboard.html')));
 app.get('/dashboard-entry.js', (_req, res) => res.sendFile(path.join(__dirname, 'dashboard-entry.js')));
 app.get('/map', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'map.html')));
 app.get('/map.js', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'map.js')));
@@ -44,9 +44,20 @@ app.get('/cover.css', (_req, res) => res.sendFile(path.join(__dirname, 'cover.cs
 app.get('/assets/road-cover.jpg', (_req, res) => res.sendFile(path.join(__dirname, 'assets', 'road-cover.jpg')));
 app.use(notFound); app.use(errorHandler);
 
-const port = Number(process.env.PORT || 3000);
-connectDb().then(() => {
-	app.listen(port, () => console.log(`Road Defect Reporting & Routing Platform running at http://localhost:${port}`));
+async function startServer() {
+	await connectDb();
+	const port = Number(process.env.PORT || 3000);
+	const server = app.listen(port, () => console.log(`Road Defect Reporting & Routing Platform running at http://localhost:${port}`));
 	loadBoundaries().catch(error => console.error('Boundary data unavailable:', error.message));
-}).catch(error => { console.error('Database startup failed:', error.message); process.exit(1); });
+	return server;
+}
+
+if (require.main === module) {
+	startServer().catch(error => {
+		console.error('Database startup failed:', error.message);
+		process.exit(1);
+	});
+}
+
 module.exports = app;
+module.exports.startServer = startServer;

@@ -8,16 +8,31 @@ const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, character =>
   "'": '&#39;',
   '"': '&quot;'
 }[character]));
-const getGreeting = () => {
-  const hour = new Date().toLocaleString('en-GB', {
+const formatKenyaTime = value => {
+  const date = value ? new Date(value) : new Date();
+  if (Number.isNaN(date.getTime())) return 'time unavailable';
+  return new Intl.DateTimeFormat('en-KE', {
     timeZone: 'Africa/Nairobi',
-    hour: 'numeric',
-    hour12: false
+    dateStyle: 'medium',
+    timeStyle: 'short'
+  }).format(date);
+};
+
+const getGreeting = () => {
+  const currentDate = new Date().toLocaleString('en-GB',{
+    timeZone: 'Africa/Nairobi',
+    hour: 'numeric'
   });
-  const h = parseInt(hour, 10);
-  if (h < 12) return 'Good morning';
-  if (h < 17) return 'Good afternoon';
-  return 'Good evening';
+  
+  const hour = parseInt(currentDate, 10);
+  let greeting = 'Good evening';
+   
+  if (hour < 12) {
+    greeting = ' Good morning';
+  }else if (hour < 17 ){
+    greeting = 'Good afternoon';
+  }
+  return greeting;
 };
 
 
