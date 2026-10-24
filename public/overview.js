@@ -19,20 +19,15 @@ const formatKenyaTime = value => {
 };
 
 const getGreeting = () => {
-  const currentDate = new Date().toLocaleString('en-GB',{
+  const hour = Number(new Intl.DateTimeFormat('en-KE', {
     timeZone: 'Africa/Nairobi',
-    hour: 'numeric'
-  });
-  
-  const hour = parseInt(currentDate, 10);
-  let greeting = 'Good evening';
-   
-  if (hour < 12) {
-    greeting = ' Good morning';
-  }else if (hour < 17 ){
-    greeting = 'Good afternoon';
-  }
-  return greeting;
+    hour: 'numeric',
+    hourCycle: 'h23'
+  }).formatToParts(new Date()).find(part => part.type === 'hour').value);
+
+  if (hour >= 5 && hour < 12) return 'Good morning';
+  if (hour < 17 && hour >= 12) return 'Good afternoon';
+  return 'Good evening';
 };
 
 

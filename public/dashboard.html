@@ -61,7 +61,14 @@
     if (!token) {
       window.location.replace('/login');
     }
-    if (user?.name) document.getElementById('welcomeHeading').textContent = `Good morning, ${user.name}.`;
+    const hour = Number(new Intl.DateTimeFormat('en-KE', {
+      timeZone: 'Africa/Nairobi',
+      hour: 'numeric',
+      hourCycle: 'h23'
+    }).formatToParts(new Date()).find(part => part.type === 'hour').value);
+    const greeting = hour >= 5 && hour < 12 ? 'Good morning'
+      : hour >= 12 && hour < 17 ? 'Good afternoon' : 'Good evening';
+    if (user?.name) document.getElementById('welcomeHeading').textContent = `${greeting}, ${user.name}.`;
     document.getElementById('signOut').onclick = () => {
       localStorage.removeItem('staffToken');
       sessionStorage.removeItem('bw_token');
