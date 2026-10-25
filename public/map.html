@@ -10,34 +10,39 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="/dashboard">
-      <span class="brand-mark">R</span>
-      <span>KeRRA Staff Portal</span>
-    </a>
-    <nav>
-      <a class="nav-link" href="/dashboard">Dashboard</a>
-      <a class="nav-link" href="/">Citizen reporting</a>
-      <button id="signOut" class="staff-link" type="button">Sign out</button>
-    </nav>
-  </header>
-  <main class="map-page">
-    <section class="dash-header">
-      <div>
-        <p class="eyebrow">KERRA STAFF PORTAL</p>
-        <h1>Road defect map</h1>
-        <p>Reported defects and verified county boundaries across Kenya.</p>
+  <main class="dashboard-view active">
+    <aside class="sidebar">
+      <a class="brand" href="/overview"><span class="brand-mark">R</span><span>Road Defect Reporting &amp; Routing Platform</span></a>
+      <p class="staff-tag">KERRA STAFF PORTAL</p>
+      <a class="side-nav" href="/overview">▦ Overview</a>
+      <a class="side-nav" href="/reports">◉ All reports <b id="reportCount">0</b></a>
+      <a class="side-nav active" href="/map">⌖ Map view</a>
+      <a id="enrollmentLink" class="side-nav" href="/enrol-staff" hidden>＋ Enrol staff</a>
+      <a id="managementLink" class="side-nav" href="/staff-management" hidden>☷ Staff management</a>
+      <div class="staff-profile">
+        <div class="avatar" id="staffAvatar">SM</div>
+        <div><strong id="staffName">Staff member</strong><small id="staffRole">Authenticated staff</small></div>
       </div>
-    </section>
-    <section class="panel map-page-panel">
-      <div id="mapStatus" class="map-status" role="status">Loading terrain map and reports…</div>
-      <div id="reportMap" aria-label="Terrain map of road defects across Kenya"></div>
-      <div class="legend">
-        <span><i class="dot red"></i>Critical</span>
-        <span><i class="dot amber-dot"></i>New</span>
-        <span><i class="dot blue-dot"></i>In progress</span>
-      </div>
-    </section>
+      <button id="signOut" class="side-nav" type="button">↪ Sign out</button>
+    </aside>
+    <div class="dashboard-main map-page">
+      <section class="dash-header">
+        <div>
+          <p class="eyebrow" id="staffOffice">KERRA STAFF PORTAL</p>
+          <h1>Road defect map</h1>
+          <p>Reported defects and verified county boundaries across Kenya.</p>
+        </div>
+      </section>
+      <section class="panel map-page-panel">
+        <div id="mapStatus" class="map-status" role="status">Loading terrain map and reports…</div>
+        <div id="reportMap" aria-label="Terrain map of road defects across Kenya"></div>
+        <div class="legend">
+          <span><i class="dot red"></i>Critical</span>
+          <span><i class="dot amber-dot"></i>New</span>
+          <span><i class="dot blue-dot"></i>In progress</span>
+        </div>
+      </section>
+    </div>
   </main>
   <script src="/map.js"></script>
 </body>

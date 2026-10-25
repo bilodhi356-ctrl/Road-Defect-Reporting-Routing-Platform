@@ -2,6 +2,7 @@ if (sessionStorage.getItem('bw_token')) {
   switchView('dashboard');
 
   const pageTabs = {
+    '/staff': 'reports',
     '/reports': 'reports',
     '/enrol-staff': 'enrollment',
     '/staff-management': 'management'

@@ -1,5 +1,13 @@
 const token = sessionStorage.getItem('bw_token');
+const user = JSON.parse(sessionStorage.getItem('bw_user') || 'null');
 const statusMessage = document.querySelector('#mapStatus');
+const displayName = user?.name?.trim() || 'Staff member';
+document.querySelector('#staffName').textContent = displayName;
+document.querySelector('#staffRole').textContent = user?.role || 'Authenticated staff';
+document.querySelector('#staffOffice').textContent = user?.office || 'KERRA STAFF PORTAL';
+document.querySelector('#staffAvatar').textContent = displayName.split(/\s+/).filter(Boolean).slice(0, 2).map(part => part[0]).join('').toUpperCase();
+document.querySelector('#enrollmentLink').hidden = user?.role !== 'admin';
+document.querySelector('#managementLink').hidden = user?.role !== 'admin';
 const escapeHtml = value => String(value ?? '').replace(/[&<>'"]/g, character => ({
   '&': '&amp;',
   '<': '&lt;',
@@ -23,8 +31,6 @@ if (!token) {
   const map = L.map('reportMap', {
     center: [0.4, 37.9],
     zoom: 6,
-    maxBounds: kenyaBounds,
-    maxBoundsViscosity: 1,
     minZoom: 5
   }).fitBounds(kenyaBounds);
   let tileFailureReported = false;
@@ -63,7 +69,24 @@ if (!token) {
 
   Promise.allSettled([loadReports(), loadBoundaries()]).then(results => {
     const [reportsResult, boundariesResult] = results;
+    if (boundariesResult.status === 'fulfilled') {
+      const counties = L.geoJSON(boundariesResult.value, {
+        style: { color: '#52786a', weight: 1.25, fillColor: '#c4ddcb', fillOpacity: 0.12 },
+        onEachFeature: (feature, layer) => {
+          const county = feature.properties?.COUNTY;
+          if (county) layer.bindTooltip(escapeHtml(county));
+        }
+      }).addTo(map);
+      const bounds = counties.getBounds();
+      if (bounds.isValid()) {
+        const viewBounds = bounds.pad(0.04);
+        map.fitBounds(viewBounds, { padding: [12, 12], maxZoom: 7 });
+        map.setMaxBounds(viewBounds.pad(0.35));
+      }
+    }
+
     if (reportsResult.status === 'fulfilled') {
+      document.querySelector('#reportCount').textContent = reportsResult.value.length;
       reportsResult.value.forEach(report => {
         if (typeof report.location?.lat !== 'number' || typeof report.location?.lng !== 'number') return;
         const color = report.severity === 'Critical'
@@ -79,12 +102,6 @@ if (!token) {
           `<strong>${escapeHtml(report.category)}</strong><br>${escapeHtml(report.reference)}<br>${escapeHtml(report.office)}<br><em>${escapeHtml(report.status)}</em>`
         );
       });
-    }
-
-    if (boundariesResult.status === 'fulfilled') {
-      L.geoJSON(boundariesResult.value, {
-        style: { color: '#0066cc', weight: 2, fillOpacity: 0.05 }
-      }).addTo(map);
     }
 
     const messages = [];
