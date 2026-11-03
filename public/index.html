@@ -9,6 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/cover.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head>
 <body>
   <header class="topbar">
@@ -96,17 +98,22 @@
             <small>Provide at least one contact method. Your details are visible only to authorised staff and are not published.</small>
           </div>
           <div class="two-col">
-            <div class="field">
-              <label>Location</label>
-              <button class="location-button" id="locateBtn" type="button"><span>⌖</span><span id="locationLabel">Use my location</span></button>
+            <div class="field report-location-field">
+              <label>Defect location</label>
+              <div class="location-actions">
+                <button class="location-button" id="locateBtn" type="button"><span>⌖</span><span id="locationLabel">Use current GPS</span></button>
+                <small>GPS shows where you are now. If you’re reporting from elsewhere, select the defect on the map.</small>
+              </div>
+              <div id="reportLocationMap" class="report-location-map" role="application" aria-label="Select the defect location on the map"></div>
+              <div id="locationNote" class="location-note" role="status">Click the map to place a pin at the defect. You can drag the pin to adjust it.</div>
             </div>
             <div class="field">
               <label for="photo">Photo evidence</label>
               <label class="photo-button" for="photo">▧ <span id="photoLabel">Add photo</span></label>
               <input id="photo" type="file" accept="image/*" capture="environment" hidden>
+              <small class="photo-guidance">A photo taken at the site may help staff verify the location. If clarification is needed, staff can contact you only if you give consent.</small>
             </div>
           </div>
-          <div id="locationNote" class="location-note">Your exact location is only used to route this report.</div>
           <button class="submit-button" type="submit">Send report <span>→</span></button>
         </form>
       </div>

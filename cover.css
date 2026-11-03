@@ -12,3 +12,48 @@
   position: relative;
   z-index: 1;
 }
+
+.report-location-field {
+  grid-column: 1 / -1;
+}
+
+.location-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+}
+
+.location-actions small,
+.photo-guidance {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.report-location-map {
+  height: 260px;
+  margin-top: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #e7ece8;
+  z-index: 0;
+}
+
+.location-note {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+  margin-top: 8px;
+}
+
+.photo-guidance {
+  display: block;
+  margin-top: 10px;
+}
+
+@media (max-width: 640px) {
+  .report-location-map {
+    height: 220px;
+  }
+}
