@@ -52,4 +52,35 @@ async function sendCitizenUpdate(report, event) {
   }
 }
 
-module.exports = { sendCitizenUpdate, statusMessage };
+function isEmailConfigured() {
+  return Boolean(process.env.RESEND_API_KEY && process.env.MAIL_FROM);
+}
+
+async function sendPasswordReset(email, resetUrl) {
+  if (!process.env.RESEND_API_KEY) {
+    throw new Error('RESEND_API_KEY is required to send password reset emails.');
+  }
+  if (!process.env.MAIL_FROM) {
+    throw new Error('MAIL_FROM is required when RESEND_API_KEY is configured.');
+  }
+
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: process.env.MAIL_FROM,
+      to: email,
+      subject: 'KeRRA staff password reset',
+      text: `A password reset was requested for your KeRRA staff account.\n\nUse this link within 30 minutes to choose a new password:\n${resetUrl}\n\nIf you did not request this, you can ignore this email.`,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Resend API request failed (${response.status}).`);
+  }
+}
+
+module.exports = { isEmailConfigured, sendCitizenUpdate, sendPasswordReset, statusMessage };

@@ -13,8 +13,8 @@
   <main class="track-view">
     <section class="report-card">
       <p class="eyebrow">KERRA STAFF PORTAL</p>
-      <h1>Secure staff sign in</h1>
-      <p>Only authorised KeRRA staff can access and update reports.</p>
+      <h1 id="pageTitle">Secure staff sign in</h1>
+      <p id="pageDescription">Only authorised KeRRA staff can access and update reports.</p>
       <form id="loginForm">
         <div class="field">
           <label for="loginEmail">Email</label>
@@ -26,6 +26,29 @@
         </div>
         <button class="submit-button" type="submit">Sign in securely <span>→</span></button>
         <p id="loginError" role="alert"></p>
+      </form>
+      <button id="forgotPasswordLink" class="text-button" type="button">Forgot password?</button>
+      <form id="forgotPasswordForm" hidden>
+        <div class="field">
+          <label for="resetEmail">Staff email</label>
+          <input id="resetEmail" type="email" required autocomplete="email">
+        </div>
+        <button class="submit-button" type="submit">Email reset link <span>→</span></button>
+        <p id="forgotPasswordMessage" role="status"></p>
+        <button id="backToLogin" class="text-button" type="button">← Back to sign in</button>
+      </form>
+      <form id="resetPasswordForm" hidden>
+        <div class="field">
+          <label for="newPassword">New password</label>
+          <input id="newPassword" type="password" minlength="12" maxlength="128" required autocomplete="new-password">
+        </div>
+        <div class="field">
+          <label for="confirmPassword">Confirm new password</label>
+          <input id="confirmPassword" type="password" minlength="12" maxlength="128" required autocomplete="new-password">
+        </div>
+        <button class="submit-button" type="submit">Reset password <span>→</span></button>
+        <p id="resetPasswordMessage" role="alert"></p>
+        <button id="requestAnotherReset" class="text-button" type="button">Request another reset link</button>
       </form>
       <a class="nav-link" href="/">← Return to citizen reporting</a>
     </section>

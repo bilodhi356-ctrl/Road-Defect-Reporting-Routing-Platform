@@ -34,7 +34,6 @@ if (!token) {
     minZoom: 5
   }).fitBounds(kenyaBounds);
   let tileFailureReported = false;
-
   L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
     attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="https://viewfinderpanoramas.org/">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a>',
     subdomains: 'abc',
@@ -77,6 +76,23 @@ if (!token) {
           if (county) layer.bindTooltip(escapeHtml(county));
         }
       }).addTo(map);
+      counties.eachLayer(countyLayer => {
+        const county = countyLayer.feature?.properties?.COUNTY;
+        if (!county) return;
+        const officeName = `${county} Regional Office`;
+        L.marker(countyLayer.getBounds().getCenter(), {
+          title: `${officeName} (approximate county location)`,
+          alt: `${officeName} (approximate county location)`,
+          icon: L.divIcon({
+            className: 'office-map-icon',
+            html: '<span aria-hidden="true"></span>',
+            iconSize: [20, 20],
+            iconAnchor: [10, 10]
+          })
+        }).addTo(map).bindPopup(
+          `<strong>${escapeHtml(officeName)}</strong><br>Approximate county location; exact office address not provided.`
+        );
+      });
       const bounds = counties.getBounds();
       if (bounds.isValid()) {
         const viewBounds = bounds.pad(0.04);
