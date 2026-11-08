@@ -2,6 +2,9 @@ let reports=[], position=null, miniMap, fullMap, boundaryData=null, boundaryLoad
 window.countyBoundariesLoaded=false;
 const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
 const state={token:sessionStorage.getItem('bw_token'),user:JSON.parse(sessionStorage.getItem('bw_user')||'null'),officers:[]};
+const countyOfficeNames=['Baringo','Bomet','Bungoma','Busia','Embu','Garissa','Homa Bay','Isiolo','Kajiado','Kakamega','Keiyo-Marakwet','Kericho','Kiambu','Kilifi','Kirinyaga','Kisii','Kisumu','Kitui','Kwale','Laikipia','Lamu','Machakos','Makueni','Mandera','Marsabit','Meru','Migori','Mombasa',"Murang'a",'Nairobi','Nakuru','Nandi','Narok','Nyamira','Nyandarua','Nyeri','Samburu','Siaya','Taita Taveta','Tana River','Tharaka','Trans Nzoia','Turkana','Uasin Gishu','Vihiga','Wajir','West Pokot'];
+const officeSelect=$('#enrolOffice');
+if(officeSelect){const selectedOffice=officeSelect.value;officeSelect.replaceChildren(new Option('Select office',''),new Option('KeRRA Head Office'),new Option('Central Regional Office'),...countyOfficeNames.map(county=>new Option(`${county} Regional Office`)),new Option('Other KeRRA Regional Office'));officeSelect.value=selectedOffice;}
 const api=async(path,options={})=>{const headers={...(options.body instanceof FormData?{}:{'Content-Type':'application/json'}),...(state.token?{Authorization:`Bearer ${state.token}`}:{})};const res=await fetch(`/api${path}`,{...options,headers:{...headers,...options.headers}});const data=await res.json().catch(()=>({message:'Unexpected server response.'}));if(!res.ok)throw new Error(data.message||'Request failed.');return data;};
 function toast(msg){const el=$('#toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),4500)}
 function escapeHtml(value=''){return String(value).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
