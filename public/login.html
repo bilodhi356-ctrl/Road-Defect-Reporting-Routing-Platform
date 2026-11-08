@@ -8,6 +8,42 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
+  <style>
+    .login-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .login-actions .text-button,
+    .login-actions .submit-button {
+      width: auto;
+      border: 0;
+      border-radius: 4px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .login-actions .text-button {
+      background: #f59e0b;
+    }
+
+    .login-actions .submit-button {
+      display: block;
+      background: var(--green);
+    }
+
+    .login-return-link {
+      display: inline-block;
+      margin-top: 16px;
+      color: var(--green);
+      text-decoration: none;
+    }
+
+  </style>
 </head>
 <body>
   <main class="track-view">
@@ -24,10 +60,13 @@
           <label for="loginPassword">Password</label>
           <input id="loginPassword" type="password" required autocomplete="current-password">
         </div>
-        <button class="submit-button" type="submit">Sign in securely <span>→</span></button>
+        <div class="login-actions">
+          <button id="forgotPasswordLink" class="text-button" type="button">Forgot password?</button>
+          <button class="submit-button" type="submit">Sign In</button>
+        </div>
+        <a class="nav-link login-return-link" href="/">← Return to citizen reporting</a>
         <p id="loginError" role="alert"></p>
       </form>
-      <button id="forgotPasswordLink" class="text-button" type="button">Forgot password?</button>
       <form id="forgotPasswordForm" hidden>
         <div class="field">
           <label for="resetEmail">Staff email</label>
@@ -50,7 +89,6 @@
         <p id="resetPasswordMessage" role="alert"></p>
         <button id="requestAnotherReset" class="text-button" type="button">Request another reset link</button>
       </form>
-      <a class="nav-link" href="/">← Return to citizen reporting</a>
     </section>
   </main>
   <script src="/login.js"></script>
