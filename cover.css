@@ -52,6 +52,21 @@
   margin-top: 10px;
 }
 
+.contact-consent > label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.5;
+}
+
+.contact-consent > label input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: auto;
+  margin: 2px 0 0;
+  padding: 0;
+  accent-color: var(--green);
+}
+
 @media (max-width: 640px) {
   .report-location-map {
     height: 220px;
