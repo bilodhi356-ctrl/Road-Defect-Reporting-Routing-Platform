@@ -38,6 +38,7 @@ app.get('/map.js', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'm
 app.get('/map.css', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'map.css')));
 app.get(['/track', '/track.html'], (_req, res) => res.sendFile(path.join(__dirname, 'public', 'track.html')));
 app.get('/report.js', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'report.js')));
+app.get('/i18n.js', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'i18n.js')));
 app.get('/login.js', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'login.js')));
 app.get('/track.js', (_req, res) => res.sendFile(path.join(__dirname, 'track.js')));
 app.get('/app.js', (_req, res) => res.sendFile(path.join(__dirname, 'app.js')));

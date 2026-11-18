@@ -19,107 +19,115 @@
       <span>Road Defect Reporting &amp; Routing Platform</span>
     </a>
     <nav>
-      <a class="nav-link active" href="/">Report a defect</a>
-      <a class="nav-link" href="/track">Track report</a>
-      <a class="staff-link" href="/login">Staff portal →</a>
+      <a class="nav-link active" href="/" data-i18n="nav.report">Report a defect</a>
+      <a class="nav-link" href="/track" data-i18n="nav.track">Track report</a>
+      <a class="staff-link" href="/login" data-i18n="nav.staff">Staff portal →</a>
+      <label class="language-select" aria-label="Language">
+        <span data-i18n="language.label">Language</span>
+        <select id="languageSelect" aria-label="Select language">
+          <option value="en">English</option>
+          <option value="sw">Kiswahili</option>
+        </select>
+      </label>
     </nav>
   </header>
   <main>
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow">KENYA RURAL ROADS</p>
-        <h1>Safer roads start<br>with <em>your report.</em></h1>
-        <p class="lead">Spotted a pothole, washed-out road, or damaged culvert? Send KeRRA the location and evidence in minutes.</p>
+        <p class="eyebrow" data-i18n="hero.eyebrow">KENYA RURAL ROADS</p>
+        <h1 data-i18n="hero.title" data-i18n-html>Safer roads start<br>with <em>your report.</em></h1>
+        <p class="lead" data-i18n="hero.lead">Spotted a pothole, washed-out road, or damaged culvert? Send KeRRA the location and evidence in minutes.</p>
         <div class="trust">
-          <span>◉ GPS routed</span>
-          <span>◈ Photo evidence</span>
-          <span>✓ Follow-up updates</span>
+          <span data-i18n="hero.gps">◉ GPS routed</span>
+          <span data-i18n="hero.photo">◈ Photo evidence</span>
+          <span data-i18n="hero.updates">✓ Follow-up updates</span>
         </div>
       </div>
       <div class="report-card">
         <div class="card-heading">
           <span class="step-badge">01</span>
           <div>
-            <h2>Report a road defect</h2>
-            <p>Help us direct this to the right team.</p>
+            <h2 data-i18n="form.title">Report a road defect</h2>
+            <p data-i18n="form.subtitle">Help us direct this to the right team.</p>
           </div>
         </div>
         <form id="reportForm">
           <div class="two-col">
             <div class="field">
-              <label for="category">What did you notice?</label>
+              <label for="category" data-i18n="form.category">What did you notice?</label>
               <select id="category" required>
-                <option value="">Select defect type</option>
-                <option>Pothole</option>
-                <option>Erosion / washout</option>
-                <option>Damaged culvert</option>
-                <option>Blocked drainage</option>
-                <option>Damaged bridge</option>
-                <option>Other road hazard</option>
+                <option value="" data-i18n="form.selectType">Select defect type</option>
+                <option data-i18n="category.pothole">Pothole</option>
+                <option data-i18n="category.erosion">Erosion / washout</option>
+                <option data-i18n="category.culvert">Damaged culvert</option>
+                <option data-i18n="category.drainage">Blocked drainage</option>
+                <option data-i18n="category.bridge">Damaged bridge</option>
+                <option data-i18n="category.other">Other road hazard</option>
               </select>
             </div>
             <div class="field">
-              <label for="severity">Severity</label>
+              <label for="severity" data-i18n="form.severity">Severity</label>
               <select id="severity" required>
-                <option value="">Select severity</option>
-                <option>Low</option>
-                <option>Medium</option>
-                <option>High</option>
-                <option>Critical</option>
+                <option value="" data-i18n="form.selectSeverity">Select severity</option>
+                <option data-i18n="severity.low">Low</option>
+                <option data-i18n="severity.medium">Medium</option>
+                <option data-i18n="severity.high">High</option>
+                <option data-i18n="severity.critical">Critical</option>
               </select>
             </div>
           </div>
           <div class="two-col">
             <div class="field">
-              <label for="roadName">Road name / number</label>
-              <input id="roadName" maxlength="120" placeholder="e.g. Nairobi–Nakuru Road">
+              <label for="roadName" data-i18n="form.roadName">Road name / number</label>
+              <input id="roadName" maxlength="120" placeholder="e.g. Nairobi–Nakuru Road" data-i18n-placeholder="form.roadPlaceholder">
             </div>
             <div class="field">
-              <label for="landmark">Nearest landmark</label>
-              <input id="landmark" maxlength="160" placeholder="e.g. Market junction">
+              <label for="landmark" data-i18n="form.landmark">Nearest landmark</label>
+              <input id="landmark" maxlength="160" placeholder="e.g. Market junction" data-i18n-placeholder="form.landmarkPlaceholder">
             </div>
           </div>
           <div class="field">
-            <label for="description">Tell us a little more <small>(optional)</small></label>
-            <textarea id="description" rows="3" placeholder="e.g. Large pothole near the market junction"></textarea>
+            <label for="description" data-i18n="form.description">Tell us a little more <small>(optional)</small></label>
+            <textarea id="description" rows="3" placeholder="e.g. Large pothole near the market junction" data-i18n-placeholder="form.descriptionPlaceholder"></textarea>
           </div>
           <div class="field contact-consent">
-            <label><input id="contactConsent" type="checkbox"> I agree that KeRRA may contact me about this report.</label>
+            <label><input id="contactConsent" type="checkbox"> <span data-i18n="form.consent">I agree that KeRRA may contact me about this report.</span></label>
             <div id="contactFields" class="two-col" hidden>
               <div>
-                <label for="contactEmail">Email address</label>
+                <label for="contactEmail" data-i18n="form.email">Email address</label>
                 <input id="contactEmail" type="email" maxlength="254" placeholder="you@example.com">
               </div>
               <div>
-                <label for="contactPhone">Phone number</label>
+                <label for="contactPhone" data-i18n="form.phone">Phone number</label>
                 <input id="contactPhone" type="tel" maxlength="20" placeholder="+254 7…">
               </div>
             </div>
-            <small>Provide at least one contact method. Your details are visible only to authorised staff and are not published.</small>
+            <small data-i18n="form.contactPrivacy">Provide at least one contact method. Your details are visible only to authorised staff and are not published.</small>
           </div>
           <div class="two-col">
             <div class="field report-location-field">
-              <label>Defect location</label>
+              <label data-i18n="form.location">Defect location</label>
               <div class="location-actions">
-                <button class="location-button" id="locateBtn" type="button"><span>⌖</span><span id="locationLabel">Use current GPS</span></button>
-                <small>GPS shows where you are now. If you’re reporting from elsewhere, select the defect on the map.</small>
+                <button class="location-button" id="locateBtn" type="button"><span>⌖</span><span id="locationLabel" data-i18n="form.useGps">Use current GPS</span></button>
+                <small data-i18n="form.locationHelp">GPS shows where you are now. If you’re reporting from elsewhere, select the defect on the map.</small>
               </div>
               <div id="reportLocationMap" class="report-location-map" role="application" aria-label="Select the defect location on the map"></div>
-              <div id="locationNote" class="location-note" role="status">Click the map to place a pin at the defect. You can drag the pin to adjust it.</div>
+              <div id="locationNote" class="location-note" role="status" data-i18n="form.locationNote">Click the map to place a pin at the defect. You can drag the pin to adjust it.</div>
             </div>
             <div class="field">
-              <label for="photo">Photo evidence</label>
-              <label class="photo-button" for="photo">▧ <span id="photoLabel">Add photo</span></label>
+              <label for="photo" data-i18n="form.photo">Photo evidence</label>
+              <label class="photo-button" for="photo">▧ <span id="photoLabel" data-i18n="form.addPhoto">Add photo</span></label>
               <input id="photo" type="file" accept="image/*" capture="environment" hidden>
-              <small class="photo-guidance">A photo taken at the site may help staff verify the location. If clarification is needed, staff can contact you only if you give consent.</small>
+              <small class="photo-guidance" data-i18n="form.photoHelp">A photo taken at the site may help staff verify the location. If clarification is needed, staff can contact you only if you give consent.</small>
             </div>
           </div>
-          <button class="submit-button" type="submit">Send report <span>→</span></button>
+          <button class="submit-button" type="submit"><span data-i18n="form.submit">Send report</span> <span>→</span></button>
         </form>
       </div>
     </section>
   </main>
   <div id="toast" role="status"></div>
+  <script src="/i18n.js"></script>
   <script src="/report.js"></script>
 </body>
 </html>
