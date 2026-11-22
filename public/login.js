@@ -27,7 +27,7 @@ document.querySelector('#backToLogin').addEventListener('click', () => {
   loginForm.hidden = false;
   document.querySelector('#forgotPasswordLink').hidden = false;
   pageTitle.textContent = 'Secure staff sign in';
-  pageDescription.textContent = 'Only authorised KeRRA staff can access and update reports.';
+  pageDescription.textContent = 'Authorised staff and registered contractors can access their workspaces.';
 });
 
 document.querySelector('#requestAnotherReset').addEventListener('click', () => {
@@ -86,7 +86,7 @@ resetPasswordForm.addEventListener('submit', async event => {
     loginForm.hidden = false;
     document.querySelector('#forgotPasswordLink').hidden = false;
     pageTitle.textContent = 'Secure staff sign in';
-    pageDescription.textContent = 'Only authorised KeRRA staff can access and update reports.';
+    pageDescription.textContent = 'Authorised staff and registered contractors can access their workspaces.';
     document.querySelector('#loginError').textContent = data.message;
   } catch (error) {
     message.textContent = error.message;
@@ -116,7 +116,7 @@ loginForm.addEventListener('submit', async event => {
 
     sessionStorage.setItem('bw_token', data.token);
     sessionStorage.setItem('bw_user', JSON.stringify(data.user));
-    window.location.assign('/staff');
+    window.location.assign(data.user.role === 'contractor' ? '/contractor' : '/staff');
   } catch (error) {
     errorMessage.textContent = error.message;
   } finally {

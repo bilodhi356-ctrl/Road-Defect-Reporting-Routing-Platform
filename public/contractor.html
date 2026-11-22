@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contractor Portal - Kisumu-Busia Corridor</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="dashboard-view active">
+    <aside class="sidebar">
+      <a class="brand" href="/contractor"><span class="brand-mark">C</span><span>Contractor portal</span></a>
+      <p class="staff-tag">ASSIGNED WORK</p>
+      <button class="side-nav active" type="button">▦ Dashboard</button>
+      <div class="staff-profile"><div class="avatar" id="contractorAvatar">CO</div><div><strong id="contractorName">Contractor</strong><small id="contractorOffice">Contractor account</small></div></div>
+      <button id="contractorSignOut" class="side-nav" type="button">↪ Sign out</button>
+    </aside>
+    <div class="dashboard-main">
+      <div class="dash-header"><div><p class="eyebrow">KISUMU-BUSIA ROAD CORRIDOR</p><h1 id="contractorGreeting">Contractor dashboard</h1><p>View assignments and update work progress.</p></div><a class="outline-button" href="/" style="text-decoration:none">Citizen view</a></div>
+      <div class="metrics">
+        <article><span class="metric-icon blue">P</span><div><b id="contractorProcurementCount">0</b><p>Procurements</p></div></article>
+        <article><span class="metric-icon amber">K</span><div><b id="contractorPendingAmount">KES 0</b><p>Pending payments</p></div></article>
+        <article><span class="metric-icon green">✓</span><div><b id="contractorCompletedCount">0</b><p>Completed works</p></div></article>
+      </div>
+      <section class="panel full-panel">
+        <div class="panel-heading"><div><h2>Assigned procurements</h2><p>Update the progress of work assigned to you.</p></div></div>
+        <div id="contractorProcurements"></div>
+      </section>
+      <section class="panel full-panel" style="margin-top:20px">
+        <div class="panel-heading"><div><h2>Payment records</h2><p>Review invoice and approval status.</p></div></div>
+        <div id="contractorPayments"></div>
+      </section>
+    </div>
+  </main>
+  <div id="toast" role="status"></div>
+  <script src="/contractor.js"></script>
+</body>
+</html>

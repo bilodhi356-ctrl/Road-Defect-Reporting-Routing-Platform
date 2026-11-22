@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KeRRA Staff Portal</title>
+  <title>KeNHA Staff Portal</title>
   <link rel="stylesheet" href="/styles.css">
   <style>
     .modal[hidden]{display:none!important}
@@ -18,18 +18,21 @@
     .timeline-event h3{font-size:14px;margin:0 0 4px}
     .timeline-event p{font-size:13px;color:#53665e;margin:0 0 5px;line-height:1.45}
     .timeline-event time{font-size:11px;color:#7b8b84}
+    .evidence-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:16px}
+    .evidence-gallery img{width:100%;max-height:65vh;object-fit:contain;border-radius:8px}
   </style>
 </head>
 <body>
   <main id="dashboard" class="dashboard-view active">
     <aside class="sidebar">
-      <a class="brand" href="/overview"><span class="brand-mark">R</span><span>KeRRA Staff Portal</span></a>
+      <a class="brand" href="/overview"><span class="brand-mark">R</span><span>KeNHA Staff Portal</span></a>
       <p class="staff-tag">STAFF PORTAL</p>
       <a class="side-nav" href="/overview" style="display:block;text-decoration:none;">▦ Overview</a>
       <button class="side-nav" data-tab="reports">◉ All reports <b id="reportCount">0</b></button>
       <a class="side-nav" href="/map" style="display:block;text-decoration:none;">⌖ Map view</a>
       <button id="enrollmentNav" class="side-nav" data-tab="enrollment" hidden>＋ Enrol staff</button>
       <button id="managementNav" class="side-nav" data-tab="management" hidden>☷ Staff management</button>
+      <button id="managementRecordsNav" class="side-nav" data-tab="managementRecords">▣ Contractors & payments</button>
       <div class="staff-profile">
         <div class="avatar" id="staffAvatar">SM</div>
         <div><strong id="staffName">Staff member</strong><small id="staffRole">Authenticated staff</small></div>
@@ -67,11 +70,11 @@
       </div>
       <div id="enrollmentTab" class="dash-tab">
         <section class="panel full-panel">
-          <div class="panel-heading"><div><h2>Staff enrollment</h2><p>Create an authorised KeRRA staff account.</p></div></div>
+          <div class="panel-heading"><div><h2>Staff enrollment</h2><p>Create an authorised KeNHA staff account.</p></div></div>
           <form id="enrollmentForm">
             <p><label>Full name<input id="enrolName" maxlength="80" required></label></p>
             <p><label>Official email<input id="enrolEmail" type="email" required></label></p>
-            <p><label>KeRRA office<select id="enrolOffice" required><option value="">Select office</option><option>KeRRA Head Office</option><option>Central Regional Office</option><option>Nairobi Regional Office</option><option>Kiambu Regional Office</option><option>Nyandarua Regional Office</option><option>Murang’a Regional Office</option><option>Other KeRRA Regional Office</option></select></label></p>
+            <p><label>KeNHA office<select id="enrolOffice" required><option value="">Select office</option><option>KeNHA Head Office</option><option>KeNHA Kisumu Regional Office</option><option>KeNHA Busia Regional Office</option><option>Other KeNHA Regional Office</option></select></label></p>
             <p><label>Role<select id="enrolRole"><option value="officer">Officer</option><option value="coordinator">Coordinator</option><option value="admin">Administrator</option></select></label></p>
             <p><label>Temporary password<input id="enrolPassword" type="password" minlength="12" maxlength="128" required><small>At least 12 characters.</small></label></p>
             <button class="submit-button" type="submit">Create staff account <span>→</span></button><p id="enrolResult"></p>
@@ -81,11 +84,107 @@
       <div id="managementTab" class="dash-tab">
         <section class="panel full-panel"><div class="panel-heading"><div><h2>Staff management</h2><p>Deactivate accounts safely or update staff roles, offices, and passwords.</p></div></div><div id="staffList"></div></section>
       </div>
+      <div id="managementRecordsTab" class="dash-tab">
+        <section class="panel full-panel">
+          <div class="panel-heading"><div><h2>Contractors & payments</h2><p id="managementRecordsDescription">Manage contractors, procurements and payment approvals.</p></div></div>
+          <div class="filters" style="margin-bottom:16px">
+            <button id="addContractorBtn" class="text-button" type="button">+ Add contractor</button>
+            <button id="addProcurementBtn" class="text-button" type="button">+ Add procurement</button>
+            <button id="addPaymentBtn" class="text-button" type="button">+ Record payment</button>
+          </div>
+          <div class="metrics" style="grid-template-columns:repeat(3,1fr)">
+            <article><span class="metric-icon green">C</span><div><b id="contractorMetric">0</b><p>Active contractors</p></div></article>
+            <article><span class="metric-icon blue">P</span><div><b id="procurementMetric">0</b><p>Active procurements</p></div></article>
+            <article><span class="metric-icon amber">K</span><div><b id="paymentMetric">KES 0</b><p>Pending payments</p></div></article>
+          </div>
+          <div class="dashboard-grid">
+            <section class="panel"><div class="panel-heading"><div><h2>Contractors</h2></div></div><div id="contractorsList"></div></section>
+            <section class="panel"><div class="panel-heading"><div><h2>Procurements</h2></div></div><div id="procurementsList"></div></section>
+          </div>
+          <section id="paymentPanel" class="panel" style="margin-top:20px"><div class="panel-heading"><div><h2>Payment records</h2></div></div><div id="paymentsList"></div></section>
+        </section>
+      </div>
     </div>
   </main>
   <div id="timelineModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="timelineTitle"><div class="modal-card"><button id="closeTimeline" class="modal-close" aria-label="Close timeline">×</button><p class="eyebrow">REPORT HISTORY</p><h2 id="timelineTitle">Report timeline</h2><p id="timelineMeta" class="timeline-meta"></p><div id="timelineList" class="timeline-list"></div></div></div>
   <div id="commentModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="commentTitle"><div class="modal-card"><button id="closeComment" class="modal-close" type="button" aria-label="Close comment form">×</button><p class="eyebrow">STAFF-ONLY NOTE</p><h2 id="commentTitle">Add comment</h2><form id="addCommentForm"><label for="commentBody">Comment</label><textarea id="commentBody" rows="5" maxlength="1000" required></textarea><p id="commentError" role="status"></p><button id="saveComment" class="submit-button" type="submit">Save comment <span>→</span></button></form></div></div>
-  <div id="photoModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="photoTitle"><div class="modal-card"><button id="closePhoto" class="modal-close" aria-label="Close photo">×</button><p class="eyebrow">REPORT EVIDENCE</p><h2 id="photoTitle">Photo evidence</h2><img id="evidenceImage" alt="Road defect evidence" style="width:100%;max-height:65vh;object-fit:contain;margin-top:16px;border-radius:8px"></div></div>
+  <div id="photoModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="photoTitle"><div class="modal-card"><button id="closePhoto" class="modal-close" aria-label="Close photo">×</button><p class="eyebrow">REPORT EVIDENCE</p><h2 id="photoTitle">Photo evidence</h2><div id="evidenceGallery" class="evidence-gallery"></div></div></div>
+  <div id="staffEditModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="staffEditTitle">
+    <div class="modal-card">
+      <button class="modal-close" type="button" data-close-management-modal="staffEditModal" aria-label="Close staff editor">×</button>
+      <p class="eyebrow">STAFF ACCOUNT</p>
+      <h2 id="staffEditTitle">Edit account</h2>
+      <p id="staffEditName" class="timeline-meta"></p>
+      <form id="staffEditForm">
+        <p><label for="staffEditRole">Role</label><select id="staffEditRole" required><option value="officer">Officer</option><option value="coordinator">Coordinator</option><option value="admin">Administrator</option></select></p>
+        <p><label for="staffEditOffice">KeNHA office</label><select id="staffEditOffice" required><option value="">Select office</option><option>KeNHA Head Office</option><option>KeNHA Kisumu Regional Office</option><option>KeNHA Busia Regional Office</option><option>Other KeNHA Regional Office</option></select></p>
+        <p><label for="staffEditPassword">New temporary password <small>(leave blank to keep current password)</small></label><input id="staffEditPassword" type="password" minlength="12" maxlength="128" autocomplete="new-password"></p>
+        <p id="staffEditError" role="status"></p>
+        <button id="saveStaffEdit" class="submit-button" type="submit">Save changes <span>→</span></button>
+      </form>
+    </div>
+  </div>
+  <div id="contractorModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="contractorModalTitle">
+    <div class="modal-card"><button class="modal-close" type="button" data-close-management-modal="contractorModal" aria-label="Close contractor form">×</button><p class="eyebrow">CONTRACTOR REGISTRATION</p><h2 id="contractorModalTitle">Add contractor</h2>
+      <form id="contractorForm">
+        <p><label>Contractor name<input id="contractorName" maxlength="120" required></label></p>
+        <p><label>Company name<input id="contractorCompany" maxlength="120"></label></p>
+        <p><label>Registration number<input id="contractorRegistration" maxlength="80"></label></p>
+        <p class="two-col"><label>Email<input id="contractorEmail" type="email" maxlength="160"></label><label>Phone<input id="contractorPhone" maxlength="40"></label></p>
+        <p><label><input id="createContractorLogin" type="checkbox"> Create contractor portal login</label></p>
+        <p id="contractorPasswordGroup" hidden><label>Temporary password<input id="contractorPassword" type="password" minlength="12" maxlength="128" placeholder="At least 12 characters"></label></p>
+        <p><label>KeNHA office<input id="contractorOffice" maxlength="120" required></label></p>
+        <p><label>Specialties<textarea id="contractorSpecialties" rows="3" maxlength="500" placeholder="Road rehabilitation, drainage, bridge works"></textarea></label></p>
+        <p id="contractorFormError" role="status"></p>
+        <small>Contractors sign in at <a href="/login">the portal sign-in page</a>. Their login only shows work assigned to their profile.</small>
+        <button class="submit-button" type="submit">Save contractor <span>→</span></button>
+      </form>
+    </div>
+  </div>
+  <div id="procurementModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="procurementModalTitle">
+    <div class="modal-card"><button class="modal-close" type="button" data-close-management-modal="procurementModal" aria-label="Close procurement form">×</button><p class="eyebrow">PROCUREMENT RECORD</p><h2 id="procurementModalTitle">Add procurement</h2>
+      <form id="procurementForm">
+        <input id="procurementReportId" type="hidden">
+        <p id="procurementAwardContext" class="timeline-meta"></p>
+        <p><label>Procurement title<input id="procurementTitle" maxlength="180" required></label></p>
+        <p class="two-col"><label>Reference<input id="procurementReference" maxlength="40" placeholder="Generated if blank"></label><label>Office<input id="procurementOffice" maxlength="120" required></label></p>
+        <p class="two-col"><label>Category<select id="procurementCategory"><option>Routine maintenance</option><option>Emergency repair</option><option>Pavement works</option><option>Drainage works</option><option>Bridge works</option><option>Other</option></select></label><label>Contractor<select id="procurementContractor"><option value="">Not awarded yet</option></select></label></p>
+        <p class="two-col"><label>Estimated amount (KES)<input id="procurementEstimated" type="number" min="0" step="0.01" value="0"></label><label>Awarded amount (KES)<input id="procurementAwarded" type="number" min="0" step="0.01" value="0"></label></p>
+        <p class="two-col"><label>Start date<input id="procurementStart" type="date"></label><label>End date<input id="procurementEnd" type="date"></label></p>
+        <p><label>Notes<textarea id="procurementNotes" rows="3" maxlength="2000"></textarea></label></p>
+        <p id="procurementFormError" role="status"></p>
+        <button class="submit-button" type="submit">Save procurement <span>→</span></button>
+      </form>
+    </div>
+  </div>
+  <div id="paymentModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="paymentModalTitle">
+    <div class="modal-card"><button class="modal-close" type="button" data-close-management-modal="paymentModal" aria-label="Close payment form">×</button><p class="eyebrow">PAYMENT RECORD</p><h2 id="paymentModalTitle">Record payment</h2>
+      <form id="paymentForm">
+        <p><label>Procurement<select id="paymentProcurement" required><option value="">Select procurement</option></select></label></p>
+        <p class="two-col"><label>Contractor<select id="paymentContractor" required><option value="">Select contractor</option></select></label><label>Invoice number<input id="paymentInvoice" maxlength="80"></label></p>
+        <p class="two-col"><label>Amount (KES)<input id="paymentAmount" type="number" min="0" step="0.01" required></label><label>Payment method<select id="paymentMethod"><option>Bank transfer</option><option>Cheque</option><option>Mobile money</option><option>Other</option></select></label></p>
+        <p class="two-col"><label>Status<select id="paymentStatus"><option>Pending</option><option>Approved</option><option>Paid</option><option>Rejected</option></select></label><label>Due date<input id="paymentDue" type="date"></label></p>
+        <p><label>Notes<textarea id="paymentNotes" rows="3" maxlength="2000"></textarea></label></p>
+        <p id="paymentFormError" role="status"></p>
+        <button class="submit-button" type="submit">Save payment <span>→</span></button>
+      </form>
+    </div>
+  </div>
+  <div id="paymentStatusModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="paymentStatusTitle">
+    <div class="modal-card">
+      <button class="modal-close" type="button" data-close-management-modal="paymentStatusModal" aria-label="Close payment status form">×</button>
+      <p class="eyebrow">PAYMENT APPROVAL</p>
+      <h2 id="paymentStatusTitle">Update payment status</h2>
+      <form id="paymentStatusForm">
+        <p id="paymentStatusReference" class="timeline-meta"></p>
+        <p><label for="paymentStatusValue">Status</label>
+          <select id="paymentStatusValue" required><option>Pending</option><option>Approved</option><option>Paid</option><option>Rejected</option></select>
+        </p>
+        <p id="paymentStatusError" role="status"></p>
+        <button id="savePaymentStatus" class="submit-button" type="submit">Save status <span>→</span></button>
+      </form>
+    </div>
+  </div>
   <div id="toast" role="status"></div>
   <script src="/app.js"></script>
   <script src="/dashboard-entry.js"></script>

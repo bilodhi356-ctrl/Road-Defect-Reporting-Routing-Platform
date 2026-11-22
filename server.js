@@ -10,6 +10,7 @@ const { errorHandler, notFound } = require('./src/middleware/errors');
 const authRoutes = require('./src/routes/auth');
 const reportRoutes = require('./src/routes/reports');
 const staffRoutes = require('./src/routes/staff');
+const managementRoutes = require('./src/routes/management');
 
 const app = express();
 app.set('trust proxy', 1);
@@ -23,6 +24,7 @@ app.get('/api/health', (_, res) => res.json({ ok: true }));
 app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/reports', publicLimiter, reportRoutes);
 app.use('/api/staff', staffRoutes);
+app.use('/api/management', managementRoutes);
 // Explicitly serve only browser assets; never expose source files, .env, logs or backups.
 app.get(['/', '/index.html'], (_req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 app.get(['/login', '/login.html'], (_req, res) => res.sendFile(path.join(__dirname, 'public', 'login.html')));
@@ -31,6 +33,8 @@ app.get('/overview.js', (_req, res) => res.sendFile(path.join(__dirname, 'public
 app.get('/overview.css', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'overview.css')));
 app.get('/dashboard', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'overview.html')));
 app.get('/staff', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'staff.html')));
+app.get(['/contractor', '/contractor.html'], (_req, res) => res.sendFile(path.join(__dirname, 'public', 'contractor.html')));
+app.get('/contractor.js', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'contractor.js')));
 app.get(['/reports', '/enrol-staff', '/staff-management'], (_req, res) => res.sendFile(path.join(__dirname, 'public', 'staff.html')));
 app.get('/dashboard-entry.js', (_req, res) => res.sendFile(path.join(__dirname, 'dashboard-entry.js')));
 app.get('/map', (_req, res) => res.sendFile(path.join(__dirname, 'public', 'map.html')));
